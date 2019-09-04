@@ -12,6 +12,7 @@ typedef struct {
   char *host;
   char *port;
   char *instance;
+  char *auth;
   monikor_t *mon;
   monikor_io_handler_t *io_handler;
 } redis_module_t;

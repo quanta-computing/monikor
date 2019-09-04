@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT(quanta-agent, 1.2.0, support@quanta.io)
+AC_INIT(quanta-agent, 1.2.1, support@quanta.io)
 AM_INIT_AUTOMAKE([subdir-objects])
 LT_INIT
 
@@ -45,6 +45,11 @@ AC_CHECK_LIB([curl], [curl_easy_init])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([yaml], [yaml_parser_initialize])
 
+# Varnish version
+AM_CONDITIONAL([VARNISH3], [pkg-config --max-version=3.9999 varnishapi])
+AM_CONDITIONAL([VARNISH4], [pkg-config --atleast-version=4 varnishapi && pkg-config --max-version=4.99999999 varnishapi])
+AM_CONDITIONAL([VARNISH5], [pkg-config --atleast-version=5 varnishapi && pkg-config --max-version=5.1999999 varnishapi])
+
 AC_OUTPUT(src/Makefile lib/monikor/src/Makefile Makefile lib/modules/Makefile
   lib/modules/apache/Makefile
   lib/modules/cpu/Makefile
@@ -59,4 +64,6 @@ AC_OUTPUT(src/Makefile lib/monikor/src/Makefile Makefile lib/modules/Makefile
   lib/modules/process/Makefile
   lib/modules/redis/Makefile
   lib/modules/system/Makefile
-  lib/modules/varnish/Makefile)
+  lib/modules/varnish3/Makefile
+  lib/modules/varnish/Makefile
+  )

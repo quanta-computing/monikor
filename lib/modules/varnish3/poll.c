@@ -1,7 +1,7 @@
 #include <inttypes.h>
 
 #include "monikor.h"
-#include "varnish.h"
+#include "varnish3.h"
 
 static const struct {
   char *varnish_name;
