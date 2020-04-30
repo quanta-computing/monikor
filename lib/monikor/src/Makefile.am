@@ -1,4 +1,4 @@
-AM_CFLAGS = -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -std=c99 -W -Wall -I../include
+AM_CFLAGS = -D_DEFAULT_SOURCE -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L -std=c99 -W -Wall -I../include
 lib_LTLIBRARIES = libmonikor.la
 
 libmonikor_la_SOURCES = metrics/metric.c \

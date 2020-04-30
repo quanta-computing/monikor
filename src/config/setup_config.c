@@ -146,8 +146,7 @@ static int monikor_setup_config_modules_path(monikor_config_t *cfg) {
 
 static int monikor_setup_config_modules(monikor_config_t *cfg) {
   DIR *mod_dir;
-  struct dirent entry;
-  struct dirent *res;
+  struct dirent *entry;
 
   monikor_setup_config_modules_path(cfg);
   if (!(cfg->modules.modules = strl_new())
@@ -155,11 +154,11 @@ static int monikor_setup_config_modules(monikor_config_t *cfg) {
     monikor_log(LOG_ERR, "Cannot get modules list\n");
     return 1;
   }
-  while (!readdir_r(mod_dir, &entry, &res) && res) {
-    if (is_module_config(entry.d_name)) {
-      char *ext = strstr(entry.d_name, MONIKOR_CONFIG_EXT);
+  while ((entry = readdir(mod_dir))) {
+    if (is_module_config(entry->d_name)) {
+      char *ext = strstr(entry->d_name, MONIKOR_CONFIG_EXT);
       *ext = 0;
-      strl_push(cfg->modules.modules, entry.d_name);
+      strl_push(cfg->modules.modules, entry->d_name);
     }
   }
   closedir(mod_dir);

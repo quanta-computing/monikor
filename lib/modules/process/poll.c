@@ -20,7 +20,7 @@ static void fetch_one_process_metrics(uint64_t *metrics, char *pid) {
   char *proc_stat;
   char *info;
   char *status;
-  char filepath[256];
+  char filepath[512];
 
   sprintf(filepath, "/proc/%s/stat", pid);
   if (!(proc_stat = monikor_read_file(filepath))
@@ -42,15 +42,14 @@ static const char *metric_name[] = {
 
 int poll_process_metrics(monikor_t *mon, struct timeval *clock) {
   DIR *dir;
-  struct dirent entry;
-  struct dirent *res;
+  struct dirent *entry;
   uint64_t metrics[NB_PROC_METRICS] = {0};
 
   if (!(dir = opendir("/proc")))
     return 0;
-  while (!readdir_r(dir, &entry, &res) && res) {
-    if (looks_like_pid_dir(&entry))
-      fetch_one_process_metrics(metrics, entry.d_name);
+  while ((entry = readdir(dir))) {
+    if (looks_like_pid_dir(entry))
+      fetch_one_process_metrics(metrics, entry->d_name);
   }
   closedir(dir);
   for (size_t i = 0; i < NB_PROC_METRICS; i++)

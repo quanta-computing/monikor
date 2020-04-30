@@ -11,12 +11,12 @@
 #include "monikor.h"
 
 
-static int write_pid(monikor_t *mon) {
+static int write_pid(monikor_t *mon, pid_t pid) {
   int fd;
 
   if ((fd = open(mon->config->pidfile, O_WRONLY|O_CREAT, 0644)) == -1)
     return -1;
-  dprintf(fd, "%d\n", getpid());
+  dprintf(fd, "%d\n", pid);
   close(fd);
   return 0;
 }
@@ -42,6 +42,9 @@ static int perform_daemonize(monikor_t *mon) {
     monikor_log(LOG_ERR, "Cannot fork(2): %s\n", strerror(errno));
     return 1;
   } else if (pid != 0) {
+    if (write_pid(mon, pid)) {
+      monikor_log(LOG_ERR, "Cannot write pid file: %s\n", strerror(errno));
+    }
     exit(0);
   }
   if (chdir(mon->config->run_dir) == -1) {
@@ -98,16 +101,9 @@ static int drop_privileges(monikor_t *mon) {
 }
 
 int monikor_daemonize(monikor_t *mon) {
-  if (mon->config->daemonize) {
-    if (perform_daemonize(mon))
+  if (mon->config->daemonize && perform_daemonize(mon))
       return 1;
-  }
   if (drop_privileges(mon))
     return 1;
-  if (mon->config->daemonize) {
-    if (write_pid(mon)) {
-      monikor_log(LOG_ERR, "Cannot write pid file: %s\n", strerror(errno));
-    }
-  }
   return 0;
 }

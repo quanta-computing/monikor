@@ -1,4 +1,4 @@
-AM_CFLAGS=-std=c99 -D_GNU_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -W -Wall -fPIC -I../include -I../lib/monikor/include
+AM_CFLAGS=-std=c99 -D_DEFAULT_SOURCE -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L -W -Wall -fPIC -I../include -I../lib/monikor/include
 AM_LDFLAGS=-rdynamic
 bin_PROGRAMS = monikor
 

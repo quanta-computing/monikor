@@ -90,14 +90,14 @@ static int looks_like_pid_dir(const struct dirent *entry) {
 int poll_processes_metrics(monikor_t *mon, struct timeval *clock) {
   int n = 0;
   DIR *dir;
-  struct dirent entry;
-  struct dirent *res;
+  struct dirent *entry;
 
   if (!(dir = opendir("/proc")))
     return 0;
-  while (!readdir_r(dir, &entry, &res) && res)
-    if (looks_like_pid_dir(&entry))
-      n += poll_one_process(mon, clock, atoi(entry.d_name));
+  while ((entry = readdir(dir))) {
+    if (looks_like_pid_dir(entry))
+      n += poll_one_process(mon, clock, atoi(entry->d_name));
+  }
   closedir(dir);
   return n;
 }

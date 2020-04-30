@@ -11,5 +11,17 @@ SUBDIRS = apache \
   postgresql \
   process \
   redis \
-  system \
-  varnish
+  system
+
+if VARNISH3
+  SUBDIRS += varnish3
+endif
+if VARNISH4
+  SUBDIRS += varnish
+endif
+if VARNISH5
+  SUBDIRS += varnish
+endif
+if VARNISH6
+  SUBDIRS += varnish6
+endif

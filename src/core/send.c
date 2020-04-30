@@ -5,7 +5,7 @@
 
 #include "monikor.h"
 
-#define MAX_HEADER_LENGTH 256
+#define MAX_HEADER_LENGTH 1024
 #define RESPONSE_BODY_SIZE 1024
 
 
